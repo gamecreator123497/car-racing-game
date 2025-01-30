@@ -1,4 +1,4 @@
-// script.js
+
 let car = document.getElementById("car");
 let obstacle = document.getElementById("obstacle");
 let gameArea = document.getElementById("gameArea");
