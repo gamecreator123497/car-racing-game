@@ -1,0 +1,50 @@
+// script.js
+let car = document.getElementById("car");
+let obstacle = document.getElementById("obstacle");
+let gameArea = document.getElementById("gameArea");
+
+let carSpeed = 5;
+let obstacleSpeed = 3;
+let carPosition = 50; // Percentage position (50% means center)
+
+function moveCar(event) {
+    if (event.key === "ArrowLeft" && carPosition > 10) {
+        carPosition -= carSpeed;
+    }
+    if (event.key === "ArrowRight" && carPosition < 90) {
+        carPosition += carSpeed;
+    }
+    car.style.left = carPosition + "%";
+}
+
+function moveObstacle() {
+    let obstacleTop = parseInt(obstacle.style.top || "-100px");
+    obstacleTop += obstacleSpeed;
+    obstacle.style.top = obstacleTop + "px";
+
+    // Reset obstacle position if it goes off-screen
+    if (obstacleTop > gameArea.offsetHeight) {
+        obstacle.style.top = "-100px";
+        obstacle.style.left = Math.random() * 100 + "%"; // Random horizontal position
+    }
+
+    // Collision detection
+    if (
+        obstacleTop + 100 >= gameArea.offsetHeight - 20 && // bottom of car
+        parseInt(obstacle.style.left) >= carPosition - 5 &&
+        parseInt(obstacle.style.left) <= carPosition + 5
+    ) {
+        alert("Game Over!");
+        resetGame();
+    }
+}
+
+function resetGame() {
+    obstacle.style.top = "-100px";
+    carPosition = 50;
+    car.style.left = carPosition + "%";
+}
+
+document.addEventListener("keydown", moveCar);
+
+setInterval(moveObstacle, 20);
